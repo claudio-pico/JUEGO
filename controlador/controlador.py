@@ -64,18 +64,24 @@ def GetPregunta(ctgoria,estadoResp=None):
 
 def ingresarRespuesta(idPregunta,idRespuesta,idCliente,idUsuario):
     pregunta=modelo.findRespuestaCorrecta(idPregunta,idRespuesta)
+    respuestaCreditos={};
+    usuario = modelo.findUsuario(idCliente, idUsuario)
+    if usuario is None:
+        return "no econtro u"
     if pregunta is None:
-        aciertoPrta="incorrecto"
-        return constantes.Incorrecto
+        respuestaCreditos["rstaAnterior"]=constantes.Incorrecto
+        respuestaCreditos["creditoUsuario"] = usuario.Usuarios.credito_usuario
+        respuestaCreditos["creditoCliente"] = usuario.Clientes.credito_cliente
+
+        return respuestaCreditos
     else:
-        aciertoPrta = "correcto"
-        usuario = modelo.findUsuario(idCliente,idUsuario)
-        if usuario is None:
-            return "no econtro u"
         usuario.Usuarios.credito_usuario= usuario.Usuarios.credito_usuario+constantes.puntosRespuestas
         usuario.Clientes.credito_cliente= usuario.Clientes.credito_cliente+constantes.puntosRespuestas
-        update=modelo.commit()
-        return constantes.Correcto
+        modelo.commit()
+        respuestaCreditos["rstaAnterior"] = constantes.Correcto
+        respuestaCreditos["creditoUsuario"] = usuario.Usuarios.credito_usuario
+        respuestaCreditos["creditoCliente"] = usuario.Clientes.credito_cliente
+        return respuestaCreditos
 
 
 

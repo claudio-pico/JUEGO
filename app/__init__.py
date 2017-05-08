@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY']='SECRET_KEY'
 
-@app.route('/token')
+@app.route("/"+constantes.version+"/token")
 def loguin():
     usuario=request.args.get('usuario')
     idCliente = request.args.get('cliente')
@@ -37,7 +37,7 @@ def verify_token(username, client_password):
     else:
         return True
 
-@app.route('/usuarios')
+@app.route("/"+constantes.version+'/usuarios/')
 @auth.login_required
 def usuarios():
     pedido = request.args.get('pddo')
@@ -57,11 +57,9 @@ def usuarios():
 
 
 #se envia la categoria para no repetir con la pregunta anterior
-@app.route('/preguntaRespuestas/<int:ctgoria>')
+@app.route("/"+constantes.version+'/preguntaRespuestas/<int:ctgoria>')
 @auth.login_required
 def preguntaRespuesta(ctgoria,rstaAnterior=None):
-    print "acaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-    print rstaAnterior
     data = controlador.GetPregunta(ctgoria,rstaAnterior)
     if data is None:
         abort(constantes.Not_Found)
@@ -69,20 +67,19 @@ def preguntaRespuesta(ctgoria,rstaAnterior=None):
 
 
 
-#      "idPregunta": 1,"idRespuesta":1,"Categoria":1
+#      "idPregunta": 1,"idRespuesta":1
 #
 #
-@app.route('/preguntaRespuestas', methods=['PUT'])
+@app.route("/"+constantes.version+'/preguntaRespuestas', methods=['PUT'])
 @auth.login_required
 def IngresaRespuesta():
-    if (not request.json or not 'idPregunta' in request.json) or (not 'idRespuesta' in request.json) or (not 'Categoria' in request.json):
+    if (not request.json or not 'idPregunta' in request.json) or (not 'idRespuesta' in request.json):
         abort(constantes.badRequest)
     usr = seguridad.verify_auth_token(request.args.get('token'), app.config['SECRET_KEY'])
-    estadoRsta=controlador.ingresarRespuesta(int(request.json['idPregunta']),int(request.json['idRespuesta']),int(usr['idCliente']),int(usr['idUsuario']))
-    if estadoRsta is None:
+    respuestaCredito=controlador.ingresarRespuesta(int(request.json['idPregunta']),int(request.json['idRespuesta']),int(usr['idCliente']),int(usr['idUsuario']))
+    if respuestaCredito is None:
         abort(constantes.Not_Found)
-    print estadoRsta
-    return preguntaRespuesta(request.json['Categoria'],estadoRsta)
+    return jsonify(respuestaCredito)
 
 
 @app.errorhandler(constantes.Not_Found)
@@ -98,5 +95,5 @@ def not_found(error):
        return make_response(jsonify({'error':'Falla Validacion'}),constantes.Not_Found)
 
 if __name__ == "__main__":
-    app.run(debug=True,port=8088)
-    #app.run(debug=True,host='192.168.1.34',port=8088)
+   # app.run(debug=True,port=8088)
+    app.run(debug=True,host='192.168.1.35',port=8088)

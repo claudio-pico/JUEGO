@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #La solicitud contiene sintais erronea y no deberia repetirse.
 invalidParameter=400
-
+version="v1"
 badRequest=400
 
 #especificamente para su uso cuando la autentificacion es posible pero ha fallado o aun no ha sido provista
@@ -19,6 +19,7 @@ puntosRespuestas=5
 OK="OK"
 Correcto="Correcto"
 Incorrecto="Incorrecto"
+
 
 
 
