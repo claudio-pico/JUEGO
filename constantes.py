@@ -20,6 +20,8 @@ OK="OK"
 Correcto="Correcto"
 Incorrecto="Incorrecto"
 
+ipadrres='192.168.1.38';
+
 
 
 

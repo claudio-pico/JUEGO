@@ -36,8 +36,8 @@ def verify_token(username, client_password):
         return False
     else:
         return True
-
-@app.route("/"+constantes.version+'/usuarios/')
+#trae Usuario(u) o Clientes(c) segun la variable pddo
+@app.route("/"+constantes.version+'/usuarios')
 @auth.login_required
 def usuarios():
     pedido = request.args.get('pddo')
@@ -59,8 +59,8 @@ def usuarios():
 #se envia la categoria para no repetir con la pregunta anterior
 @app.route("/"+constantes.version+'/preguntaRespuestas/<int:ctgoria>')
 @auth.login_required
-def preguntaRespuesta(ctgoria,rstaAnterior=None):
-    data = controlador.GetPregunta(ctgoria,rstaAnterior)
+def preguntaRespuesta(ctgoria):
+    data = controlador.GetPregunta(ctgoria)
     if data is None:
         abort(constantes.Not_Found)
     return jsonify(data)
@@ -74,7 +74,9 @@ def preguntaRespuesta(ctgoria,rstaAnterior=None):
 @auth.login_required
 def IngresaRespuesta():
     if (not request.json or not 'idPregunta' in request.json) or (not 'idRespuesta' in request.json):
+        print("no trea el body")
         abort(constantes.badRequest)
+    print request.json['idPregunta']
     usr = seguridad.verify_auth_token(request.args.get('token'), app.config['SECRET_KEY'])
     respuestaCredito=controlador.ingresarRespuesta(int(request.json['idPregunta']),int(request.json['idRespuesta']),int(usr['idCliente']),int(usr['idUsuario']))
     if respuestaCredito is None:
@@ -96,4 +98,4 @@ def not_found(error):
 
 if __name__ == "__main__":
    # app.run(debug=True,port=8088)
-    app.run(debug=True,host='192.168.1.35',port=8088)
+    app.run(debug=True,host=constantes.ipadrres,port=8088)

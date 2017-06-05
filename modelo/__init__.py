@@ -17,7 +17,6 @@ def findUsuariobyId(idUsuario):
     return busqueda
 
 def findUsuariobyNombreNcliente(nCliente,usuario):
-    print usuario
     busqueda = session.query(Usuarios,Clientes).filter(Clientes.n_cliente==nCliente).filter(Usuarios.nombre_usuario == usuario, Usuarios.id_cliente==Clientes.id_cliente).first()
     print busqueda
     return busqueda
@@ -34,8 +33,8 @@ def findRespuestas(pregunta):
    busqueda = session.query(Respuestas).filter(Preguntas.Respuestas).filter(Preguntas.id_preguntas==pregunta).all()
    return busqueda
 
-def findRespuestaCorrecta(idPregunta, idRespuesta):
-    busqueda = session.query(Preguntas).filter(Preguntas.id_preguntas == idPregunta,Preguntas.id_respuesta==idRespuesta).first()
+def findRespuestaCorrecta(idPregunta):
+    busqueda = session.query(Preguntas).filter(Preguntas.id_preguntas == idPregunta).first()
     return busqueda
 
 
