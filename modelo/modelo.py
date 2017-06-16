@@ -82,6 +82,31 @@ class Usuarios(Base):
         self.credito_usuario = credito_usuario
         self.id_cliente=id_cliente
 
+class Facturas(Base):
+    __tablename__ = 'Facturas'
+    id_factura = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    id_cliente = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('Clientes.id_cliente'))
+    fecha_vencimiento = sqlalchemy.Column(sqlalchemy.String(120), nullable=False)
+    fecha_emision = sqlalchemy.Column(sqlalchemy.String(120), nullable=False)
+    monto = sqlalchemy.Column(sqlalchemy.Float, nullable=False)
+    pagada= sqlalchemy.Column(sqlalchemy.String(12), nullable=False)
+    mes_factura= sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('Meses.id_meses'))
+    url_factura=sqlalchemy.Column(sqlalchemy.String(160), nullable=False)
+
+    def __init__(self, id_factura, id_clente, fecha_vencimiento):
+        #self.n_usuario = n_usuario
+        self.id_factura = id_factura
+        self.id_cliente = id_clente
+        self.fecha_vencimiento=fecha_vencimiento
+
+class Meses(Base):
+    __tablename__ = 'Meses'
+    id_meses=sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    mes_nombre = sqlalchemy.Column(sqlalchemy.String(64), nullable=False)
+
+    def __init__(self, id_meses, mes_nombre):
+        self.id_meses = id_meses
+        self.mes_nombre = mes_nombre
 
 
 Base.metadata.create_all(engine)

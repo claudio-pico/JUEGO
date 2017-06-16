@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from modelo import Categorias, Pregunta_Respuesta,Preguntas, Respuestas, Usuarios, Clientes
+from modelo import Categorias, Pregunta_Respuesta,Preguntas, Respuestas, Usuarios, Clientes, Facturas, Meses
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 import conexion
@@ -37,6 +37,9 @@ def findRespuestaCorrecta(idPregunta):
     busqueda = session.query(Preguntas).filter(Preguntas.id_preguntas == idPregunta).first()
     return busqueda
 
+def findFacturas(idCliente):
+    busqueda = session.query(Facturas,Meses).filter(Facturas.id_cliente == idCliente).filter(Meses.id_meses==Facturas.mes_factura).all()
+    return busqueda
 
 def commit():
    update = session.commit()

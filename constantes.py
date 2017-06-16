@@ -3,7 +3,8 @@
 invalidParameter=400
 version="v1"
 badRequest=400
-
+si="SI"
+no="NO"
 #especificamente para su uso cuando la autentificacion es posible pero ha fallado o aun no ha sido provista
 invalidCredentials=401
 ok=200
@@ -20,7 +21,8 @@ OK="OK"
 Correcto="Correcto"
 Incorrecto="Incorrecto"
 
-ipadrres='192.168.1.38';
+#ipadrres='192.168.1.38';
+ipadrres='192.168.1.35';
 
 
 

@@ -6,14 +6,16 @@ import constantes
 
 
 def GetUsuario(idCliente, idUsuario):
-   usuario = {}
+   usuarios =[]
+   usuario={}
    busquedaUsuario = modelo.findUsuario(idCliente, idUsuario)
    if busquedaUsuario is None:
        return
    usuario["nombre"] = busquedaUsuario.Usuarios.nombre_usuario
    usuario["creditoUsuario"] = busquedaUsuario.Usuarios.credito_usuario
    creditoCliente = {"creditoCliente": busquedaUsuario.Clientes.credito_cliente}
-   jsonUsuario = {"Usuarios": usuario, "Cliente": creditoCliente}
+   usuarios.append(usuario)
+   jsonUsuario = {"Usuarios": usuarios, "Cliente": creditoCliente}
    return jsonUsuario
 
 def GetUsuarios(idCliente):
@@ -23,8 +25,6 @@ def GetUsuarios(idCliente):
       return
    for usuarioM in busquedaCliente:
        usuario={}
-       #usuario["nCliente"] = usuarioM.Clientes.n_cliente
-       #usuario["nUsuario"] = usuarioM.Usuarios.id_usuario
        usuario["nombre"] = usuarioM.Usuarios.nombre_usuario
        usuario["creditoUsuario"] = usuarioM.Usuarios.credito_usuario
 
@@ -81,7 +81,31 @@ def ingresarRespuesta(idPregunta,idRespuesta,idCliente,idUsuario):
     return respuestaCreditos
 
 
+def GetFactura(idCliente):
+   listaFacturas =[]
+   estadoCliente={}
+   busquedaFacturas = modelo.findFacturas(idCliente)
+   if busquedaFacturas is None:
+       return
 
+   sumarMonto=0
+   vencimiento=""
+   for resp in busquedaFacturas:
+       factura = {}
+       factura["mes"] = resp.Meses.mes_nombre
+       factura["emision"] = resp.Facturas.fecha_emision
+       factura["url"] = resp.Facturas.url_factura
+       listaFacturas.append(factura)
+
+       if resp.Facturas.pagada==constantes.no:
+           sumarMonto=sumarMonto+resp.Facturas.monto
+           print "esto es monto"
+           print sumarMonto
+           vencimiento=resp.Facturas.fecha_vencimiento
+   estadoCliente["monto"] = sumarMonto
+   estadoCliente["vencimiento"]=vencimiento
+   jsonUsuario = {"monto":sumarMonto,"vencimiento":vencimiento,"Facturas":listaFacturas}
+   return jsonUsuario
 
 
 

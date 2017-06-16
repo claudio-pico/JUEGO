@@ -83,6 +83,15 @@ def IngresaRespuesta():
         abort(constantes.Not_Found)
     return jsonify(respuestaCredito)
 
+@app.route("/"+constantes.version+'/facturas')
+@auth.login_required
+def facturas():
+    usr = seguridad.verify_auth_token(request.args.get('token'), app.config['SECRET_KEY'])
+    respuestaFacturas=controlador.GetFactura(usr['idCliente'])
+    if respuestaFacturas is None:
+        abort(constantes.Not_Found)
+    return jsonify(respuestaFacturas)
+
 
 @app.errorhandler(constantes.Not_Found)
 def not_found(error):
