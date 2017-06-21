@@ -1,2 +1,5 @@
 Flask
 Flask-HTTPAuth
+modelo
+controlador
+SQLAlchemy
