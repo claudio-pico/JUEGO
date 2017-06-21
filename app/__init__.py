@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import json, Flask, jsonify, request, make_response, redirect
+from flask import Flask, jsonify, request, make_response
 from flask import abort
 from flask_httpauth import HTTPBasicAuth
 
