@@ -105,6 +105,6 @@ def not_found(error):
 def not_found(error):
        return make_response(jsonify({'error':'Falla Validacion'}),constantes.Not_Found)
 
-if __name__ == "__main__":
-   # app.run(debug=True,port=8088)
-    app.run(debug=True,host=constantes.ipadrres,port=8080)
+#if __name__ == "__main__":
+    #app.run(debug=True,port=8088)
+    #app.run(debug=True,host=constantes.ipadrres,port=8080)
