@@ -1,6 +1,5 @@
 Flask
+gunicorn
 Flask-HTTPAuth
-modelo
-controlador
 SQLAlchemy
-app
+
