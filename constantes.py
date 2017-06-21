@@ -22,7 +22,7 @@ Correcto="Correcto"
 Incorrecto="Incorrecto"
 
 #ipadrres='192.168.1.38';
-ipadrres='192.168.1.35';
+ipadrres='localhost';
 
 
 
