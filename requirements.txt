@@ -3,3 +3,4 @@ Flask-HTTPAuth
 modelo
 controlador
 SQLAlchemy
+app
