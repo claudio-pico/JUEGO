@@ -107,4 +107,4 @@ def not_found(error):
 
 if __name__ == "__main__":
    # app.run(debug=True,port=8088)
-    app.run(debug=True,host=constantes.ipadrres,port=8088)
+    app.run(debug=True,host=constantes.ipadrres,port=8080)
