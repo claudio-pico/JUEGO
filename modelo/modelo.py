@@ -3,9 +3,6 @@
 import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from passlib.apps import custom_app_context as pwd_context
-from sqlalchemy.orm import sessionmaker
-
 
 #engine = sqlalchemy.create_engine("mysql+pymysql://root:@127.0.0.1/tesis?host=localhost?port=3306")
 import conexion
