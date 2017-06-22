@@ -1,6 +1,5 @@
 Flask
 Flask-HTTPAuth
 SQLAlchemy
-PyMySQ
-
+PyMySQL
 
