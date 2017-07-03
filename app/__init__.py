@@ -4,6 +4,7 @@
 from flask import Flask, jsonify, request, make_response
 from flask import abort
 from flask_httpauth import HTTPBasicAuth
+from flask_cors import cross_origin, CORS
 
 from controlador import seguridad
 
@@ -12,7 +13,7 @@ auth = HTTPBasicAuth()
 
 from controlador import controlador
 app = Flask(__name__)
-
+CORS(app)
 app.config['SECRET_KEY']='SECRET_KEY'
 
 @app.route("/"+constantes.version+"/token")
@@ -91,6 +92,14 @@ def facturas():
     if respuestaFacturas is None:
         abort(constantes.Not_Found)
     return jsonify(respuestaFacturas)
+
+@app.route("/"+constantes.version+'/categorias')
+def categorias():
+    categorias=controlador.GetCategorias()
+    if categorias is None:
+        abort(constantes.Not_Found)
+
+    return jsonify(categorias)
 
 
 @app.errorhandler(constantes.Not_Found)

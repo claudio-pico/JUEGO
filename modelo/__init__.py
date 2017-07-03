@@ -25,7 +25,7 @@ def findCliente(idCliente):
         busqueda=session.query(Usuarios,Clientes).filter(Clientes.id_cliente == idCliente).filter(Usuarios.id_cliente==Clientes.id_cliente).all()
         return busqueda
 
-def findPregunta( idpta, ctgoria):
+def findPreguntabyIDandCategoria(idpta, ctgoria):
     busqueda=session.query(Preguntas).filter(Preguntas.id_preguntas==idpta ,Preguntas.id_categorias!=ctgoria).first()
     return busqueda
 
@@ -33,13 +33,17 @@ def findRespuestas(pregunta):
    busqueda = session.query(Respuestas).filter(Preguntas.Respuestas).filter(Preguntas.id_preguntas==pregunta).all()
    return busqueda
 
-def findRespuestaCorrecta(idPregunta):
-    busqueda = session.query(Preguntas).filter(Preguntas.id_preguntas == idPregunta).first()
+def findPreguntaCategoriasbyId(idPregunta):
+    busqueda = session.query(Preguntas,Categorias).filter(Preguntas.id_preguntas==idPregunta).filter(Preguntas.id_categorias==Categorias.id_categoria).first()
     return busqueda
 
 def findFacturas(idCliente):
     busqueda = session.query(Facturas,Meses).filter(Facturas.id_cliente == idCliente).filter(Meses.id_meses==Facturas.mes_factura).all()
     return busqueda
+
+def findCategorias():
+    busqueda=session.query(Categorias).all();
+    return busqueda;
 
 def commit():
    update = session.commit()

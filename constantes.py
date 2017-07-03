@@ -17,13 +17,13 @@ Not_Found=403
 max=11
 min=1
 puntosRespuestas=5
+uno=1
 OK="OK"
 Correcto="Correcto"
 Incorrecto="Incorrecto"
 
-#ipadrres='192.168.1.38';
-ipadrres='localhost';
-
+#ipadrres='192.168.1.33';
+ipadrres='127.0.0.1';
 
 
 
