@@ -3,6 +3,8 @@
 import modelo
 import random
 import constantes
+from modelo import Preguntas
+from modelo import Respuestas
 
 
 def GetUsuario(idCliente, idUsuario):
@@ -46,7 +48,7 @@ def GetPregunta(ctgoria):
     pregunta["idPregunta"]=sqlPregunta.id_preguntas
     pregunta["pregunta"] = unicode(str(sqlPregunta.pregunta),errors='ignore')
     pregunta["idCategoria"] = sqlPregunta.id_categorias
-    sqlRespuesta=modelo.findRespuestas(sqlPregunta.id_preguntas)
+    sqlRespuesta=modelo.findRespuestasandPreguntabyIdpregunta(sqlPregunta.id_preguntas)
     for resp in sqlRespuesta:
         respuesta={}
         respuesta["id_respuesta"]=resp.id_respuestas
@@ -111,7 +113,8 @@ def GetFactura(idCliente):
 def GetCategorias():
     categorias =[]
     busquedaCategorias = modelo.findCategorias()
-
+    if busquedaCategorias is None:
+        return
     for ctg in busquedaCategorias:
         categoria = {}
         categoria["idCategoria"] = ctg.id_categoria
@@ -123,12 +126,36 @@ def GetCategorias():
     jsonCategorias = {"categorias":categorias}
     return jsonCategorias
 
+def GetRespuestas():
+    respuestas=[]
+    busquedaRespuesta= modelo.findRespuestas()
+    if busquedaRespuesta is None:
+        return
 
+    for rsta in busquedaRespuesta:
+        respuesta = {}
+        respuesta["idRespuesta"] = rsta.id_respuestas
+        respuesta["respuesta"] = rsta.respuestas
+        respuestas.append(respuesta)
 
+    jsonRespuestas = {"respuestas":respuestas}
 
+    return jsonRespuestas
 
+def SetPregunta(pregunta,respCorrecta,idCategoria,rstas):
+   p= Preguntas(respCorrecta,pregunta,idCategoria);
 
+   for r in rstas:
+       respuesta=modelo.findRespuestasListbyId(r["idRespuesta"])
+       p.Respuestas.append(respuesta)
 
+   modelo.addCommit(p)
+   return {"estado":"OK"}
+
+def SetRespuesta(respuesta):
+   r= Respuestas(respuesta);
+   modelo.addCommit(r)
+   return r.id_respuestas
 
 
 

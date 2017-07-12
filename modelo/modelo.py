@@ -28,9 +28,10 @@ class Preguntas(Base):
     Respuestas = relationship("Respuestas", secondary=Pregunta_Respuesta) # ,backref="respuesta"
     # autores = relationship("Autor", secondary=autor_libro)
 
-    def __init__(self, id_respuesta, pregunta):
+    def __init__(self, id_respuesta, pregunta,id_categorias):
         self.id_respuesta = id_respuesta
         self.pregunta = pregunta
+        self.id_categorias = id_categorias
 
 
 class Respuestas(Base):

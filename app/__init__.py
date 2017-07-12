@@ -92,7 +92,7 @@ def facturas():
     if respuestaFacturas is None:
         abort(constantes.Not_Found)
     return jsonify(respuestaFacturas)
-
+# ---------------------------API para la web ---------------------------
 @app.route("/"+constantes.version+'/categorias')
 def categorias():
     categorias=controlador.GetCategorias()
@@ -101,6 +101,34 @@ def categorias():
 
     return jsonify(categorias)
 
+@app.route("/"+constantes.version+'/respuestas')
+def respuestas():
+    respuestas=controlador.GetRespuestas()
+    if respuestas is None:
+        abort(constantes.Not_Found)
+    return jsonify(respuestas)
+
+@app.route("/"+constantes.version+'/pregunta', methods=['POST'])
+def agregarPregunta():
+    if ((not 'respuestas' in request.json or not 'pregunta' in request.json) or ((not 'categoria' in request.json) or (not 'rstCorrecta' in request.json))):
+       print "primera vald"
+       abort(constantes.badRequest)
+    respuestas=[]
+
+    if len(request.json['respuestas'])==0:
+        print "primera vald"
+        abort(constantes.badRequest)
+
+    for rsta in request.json['respuestas']:
+        if rsta["idRespuesta"] is None:
+            print "hola"
+            rsta['idRespuesta']=controlador.SetRespuesta(rsta["respuesta"])
+        respuestas.append(rsta)
+
+    idCorrecta=respuestas[0]
+    print idCorrecta
+    respuesta=controlador.SetPregunta(request.json['pregunta'],int(idCorrecta["idRespuesta"]),int(request.json["categoria"]),respuestas)
+    return jsonify(respuesta)
 
 @app.errorhandler(constantes.Not_Found)
 def not_found(error):

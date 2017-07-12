@@ -29,10 +29,12 @@ def findPreguntabyIDandCategoria(idpta, ctgoria):
     busqueda=session.query(Preguntas).filter(Preguntas.id_preguntas==idpta ,Preguntas.id_categorias!=ctgoria).first()
     return busqueda
 
-def findRespuestas(pregunta):
+def findRespuestasandPreguntabyIdpregunta(pregunta):
    busqueda = session.query(Respuestas).filter(Preguntas.Respuestas).filter(Preguntas.id_preguntas==pregunta).all()
    return busqueda
-
+def findRespuestasListbyId(id):
+    busqueda = session.query(Respuestas).filter(Respuestas.id_respuestas == id).first()
+    return busqueda
 def findPreguntaCategoriasbyId(idPregunta):
     busqueda = session.query(Preguntas,Categorias).filter(Preguntas.id_preguntas==idPregunta).filter(Preguntas.id_categorias==Categorias.id_categoria).first()
     return busqueda
@@ -45,6 +47,15 @@ def findCategorias():
     busqueda=session.query(Categorias).all();
     return busqueda;
 
+def findRespuestas():
+    busqueda=session.query(Respuestas).all();
+    return busqueda;
+
 def commit():
    update = session.commit()
    return update
+
+def addCommit(obj):
+    session.add(obj)
+    session.commit()
+    return obj
