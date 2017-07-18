@@ -104,10 +104,16 @@ def categorias():
 @app.route("/"+constantes.version+'/respuestas')
 def respuestas():
     respuestas=controlador.GetRespuestas()
+
     if respuestas is None:
         abort(constantes.Not_Found)
     return jsonify(respuestas)
 
+
+#var String pregunta
+#    Int categoria
+#    rstCorrecta (id del array respuestas)
+#    respuestas{idRespuestas: respuesta:}
 @app.route("/"+constantes.version+'/pregunta', methods=['POST'])
 def agregarPregunta():
     if ((not 'respuestas' in request.json or not 'pregunta' in request.json) or ((not 'categoria' in request.json) or (not 'rstCorrecta' in request.json))):
@@ -129,6 +135,16 @@ def agregarPregunta():
     print idCorrecta
     respuesta=controlador.SetPregunta(request.json['pregunta'],int(idCorrecta["idRespuesta"]),int(request.json["categoria"]),respuestas)
     return jsonify(respuesta)
+
+
+@app.route("/" + constantes.version + '/preguntas' , methods=['DELETE'])
+def respuestasDelete():
+    if (not 'idPregunta' in request.json ):
+        abort(constantes.badRequest)
+
+    respuesta=controlador.deletePregunta(15)
+    return jsonify(respuesta)
+
 
 @app.errorhandler(constantes.Not_Found)
 def not_found(error):

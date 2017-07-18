@@ -2,6 +2,7 @@
 from modelo import Categorias, Pregunta_Respuesta,Preguntas, Respuestas, Usuarios, Clientes, Facturas, Meses
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.sql import text
 import conexion
 print "voy a crear otra conexion"
 session=modelo.conexionBD.Session()
@@ -59,3 +60,17 @@ def addCommit(obj):
     session.add(obj)
     session.commit()
     return obj
+
+def deleteRelacion(idPregunta):
+
+    session.execute("DELETE FROM `pregunta_respuesta` WHERE id_preguntas=:preguntaID",
+                    {"preguntaID": idPregunta})
+    session.commit()
+    return
+
+def delete(idPregunta):
+    session.query(Preguntas).filter(Preguntas.id_preguntas == idPregunta).delete()
+    session.commit()
+    return
+
+

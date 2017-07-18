@@ -34,6 +34,7 @@ class Preguntas(Base):
         self.id_categorias = id_categorias
 
 
+
 class Respuestas(Base):
     __tablename__ = 'Respuestas'
     id_respuestas = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)

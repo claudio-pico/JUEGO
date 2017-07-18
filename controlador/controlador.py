@@ -157,5 +157,10 @@ def SetRespuesta(respuesta):
    modelo.addCommit(r)
    return r.id_respuestas
 
+def deletePregunta(idPregunta):
+    modelo.deleteRelacion(idPregunta)
+    modelo.delete(idPregunta)
+    return {"estado":"OK"}
+
 
 
