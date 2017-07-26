@@ -117,7 +117,6 @@ def respuestas():
 @app.route("/"+constantes.version+'/pregunta', methods=['POST'])
 def agregarPregunta():
     if ((not 'respuestas' in request.json or not 'pregunta' in request.json) or ((not 'categoria' in request.json) or (not 'rstCorrecta' in request.json))):
-       print "primera vald"
        abort(constantes.badRequest)
     respuestas=[]
 
@@ -136,15 +135,35 @@ def agregarPregunta():
     respuesta=controlador.SetPregunta(request.json['pregunta'],int(idCorrecta["idRespuesta"]),int(request.json["categoria"]),respuestas)
     return jsonify(respuesta)
 
+#pido repuestas de pregunta para update
+@app.route("/"+constantes.version+'/respuestaCategoria/<int:idPregunta>')
+def respuestaCategoria(idPregunta):
+    data = controlador.GetRespuestasPorPregunta(idPregunta)
+    if data is None:
+        abort(constantes.Not_Found)
+    return jsonify(data)
 
-@app.route("/" + constantes.version + '/preguntas' , methods=['DELETE'])
-def respuestasDelete():
-    if (not 'idPregunta' in request.json ):
-        abort(constantes.badRequest)
 
-    respuesta=controlador.deletePregunta(15)
+@app.route("/" + constantes.version + '/pregunta/<int:idPregunta>', methods=['DELETE'])
+def respuestasDelete(idPregunta):
+    respuesta=controlador.DeletePregunta(idPregunta)
+    return jsonify(respuesta)\
+
+@app.route("/" +constantes.version+ '/respuestasCategoria', methods=['PUT'])
+def updatePregunta():
+    if ((not 'idPregunta' in request.json or not 'respuestas' in request.json) or ((not 'rstCorrecta' in request.json) or (not 'ctgoria' in request.json))):
+       abort(constantes.badRequest)
+    respuestas=[];
+    respuestas=request.json['respuestas'];
+    print respuestas
+    respuesta=controlador.updatePregunta(request.json['idPregunta'],request.json['ctgoria'],request.json['rstCorrecta'],respuestas)
     return jsonify(respuesta)
 
+@app.route("/" + constantes.version + '/preguntas')
+def getPreguntas():
+
+    respuesta=controlador.GetPreguntas()
+    return jsonify(respuesta)
 
 @app.errorhandler(constantes.Not_Found)
 def not_found(error):

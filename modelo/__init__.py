@@ -33,11 +33,17 @@ def findPreguntabyIDandCategoria(idpta, ctgoria):
 def findRespuestasandPreguntabyIdpregunta(pregunta):
    busqueda = session.query(Respuestas).filter(Preguntas.Respuestas).filter(Preguntas.id_preguntas==pregunta).all()
    return busqueda
+
 def findRespuestasListbyId(id):
     busqueda = session.query(Respuestas).filter(Respuestas.id_respuestas == id).first()
     return busqueda
+
 def findPreguntaCategoriasbyId(idPregunta):
     busqueda = session.query(Preguntas,Categorias).filter(Preguntas.id_preguntas==idPregunta).filter(Preguntas.id_categorias==Categorias.id_categoria).first()
+    return busqueda
+
+def findPreguntabyId(idPregunta):
+    busqueda = session.query(Preguntas).filter(Preguntas.id_preguntas==idPregunta).first()
     return busqueda
 
 def findFacturas(idCliente):
@@ -47,6 +53,11 @@ def findFacturas(idCliente):
 def findCategorias():
     busqueda=session.query(Categorias).all();
     return busqueda;
+
+
+def findAllPreguntas():
+    busqueda = session.query(Preguntas).all()
+    return busqueda
 
 def findRespuestas():
     busqueda=session.query(Respuestas).all();
@@ -67,7 +78,11 @@ def deleteRelacion(idPregunta):
                     {"preguntaID": idPregunta})
     session.commit()
     return
-
+def updateRelacion(idPregunta,idRsta,rstaNueva):
+    session.execute("UPDATE `pregunta_respuesta` SET `id_respuesta`=:rstaNueva WHERE  `id_preguntas`=:idPregunta and `id_respuesta`=:idRsta",
+                   {"idPregunta": idPregunta,"idRsta":idRsta,"rstaNueva":rstaNueva})
+    session.commit()
+    return
 def delete(idPregunta):
     session.query(Preguntas).filter(Preguntas.id_preguntas == idPregunta).delete()
     session.commit()

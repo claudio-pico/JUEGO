@@ -157,10 +157,54 @@ def SetRespuesta(respuesta):
    modelo.addCommit(r)
    return r.id_respuestas
 
-def deletePregunta(idPregunta):
+def DeletePregunta(idPregunta):
     modelo.deleteRelacion(idPregunta)
     modelo.delete(idPregunta)
     return {"estado":"OK"}
 
 
+def GetPreguntas():
+    preguntaRespuesta = []
 
+
+    sqlPregunta = modelo.findAllPreguntas()
+    if sqlPregunta is None:
+        return
+    for preg in sqlPregunta:
+        respuestas = []
+        pregunta={}
+        pregunta["idPregunta"] = preg.id_preguntas
+        pregunta["pregunta"] = unicode(str(preg.pregunta), errors='ignore')
+        preguntaRespuesta.append(pregunta)
+
+    jsonUsuario = {"preguntas": preguntaRespuesta}
+    return jsonUsuario
+
+def GetRespuestasPorPregunta(idPregunta):
+    pregunta={}
+    p=modelo.findPreguntabyId(idPregunta)
+    pregunta["idPregunta"] = p.id_preguntas
+    pregunta["categoria"] = p.id_categorias
+    pregunta["respuestaCorrecta"] =p.id_respuesta
+    pregunta["respuestas"] = []
+
+    sqlRespuesta = modelo.findRespuestasandPreguntabyIdpregunta(p.id_preguntas)
+    for resp in sqlRespuesta:
+        respuesta = {}
+        respuesta["id_respuesta"] = resp.id_respuestas
+        respuesta["respuesta"] = resp.respuestas
+        pregunta["respuestas"].append(respuesta)
+
+    jsonUsuario = {"pregunta": pregunta}
+    return jsonUsuario
+
+def updatePregunta(idPregunta, ctgoria,rstCorrecta,respuestasPreguntas):
+
+    p=modelo.findPreguntabyId(idPregunta);
+    p.id_categorias=ctgoria;
+    p.id_respuesta=rstCorrecta
+    for rp in respuestasPreguntas:
+        modelo.updateRelacion(idPregunta,rp['respuestaV'],rp['respuestaN'])
+
+    modelo.commit();
+    return {"estado": "OK"}
