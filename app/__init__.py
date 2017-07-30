@@ -165,6 +165,16 @@ def getPreguntas():
     respuesta=controlador.GetPreguntas()
     return jsonify(respuesta)
 
+@app.route("/" + constantes.version + '/autenticar', methods=['POST'])
+def autenticar():
+    if ((not 'usuario' in request.json or not 'contrasena' in request.json)):
+        abort(constantes.badRequest)
+
+    data=seguridad.validarUsuario(request.json['usuario'],request.json['contrasena'])
+    if data is None:
+        abort(constantes.Not_Found)
+    return jsonify(data)
+
 @app.errorhandler(constantes.Not_Found)
 def not_found(error):
        return make_response(jsonify({'error':'Not Found'}),constantes.Not_Found)

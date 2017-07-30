@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from modelo import Categorias, Pregunta_Respuesta,Preguntas, Respuestas, Usuarios, Clientes, Facturas, Meses
+from modelo import Categorias, Pregunta_Respuesta,Preguntas, Respuestas, Usuarios, Clientes, Facturas, Meses, Administradores
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
@@ -12,6 +12,11 @@ session=modelo.conexionBD.Session()
 def findUsuario(idCliente, idUsuarios):
        busqueda =session.query(Usuarios, Clientes).filter(Clientes.id_cliente==idCliente).filter(Usuarios.id_usuario==idUsuarios, Usuarios.id_cliente==Clientes.id_cliente).first()
        return busqueda
+
+
+def findAdministradores(usuario, contrasena):
+    busqueda = session.query(Administradores).filter(Administradores.usuario_adm == usuario,Administradores.contrasena_adm==contrasena).first()
+    return busqueda
 
 def findUsuariobyId(idUsuario):
     busqueda = session.query(Usuarios).filter(Usuarios.id_usuario == idUsuario).first()

@@ -27,3 +27,12 @@ def verify_auth_token(token,key):
         return None # invalid token
     user = modelo.findUsuariobyId(data['idUsuario'])
     return {"idUsuario": user.id_usuario,"idCliente":user.id_cliente}
+
+def validarUsuario(usuario, contrasena):
+    print usuario
+    print contrasena
+    adm=modelo.findAdministradores(usuario,contrasena)
+    if adm is None:
+     return {"success": 'false'}
+
+    return {"success":'true'}

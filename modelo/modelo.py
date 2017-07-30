@@ -107,6 +107,16 @@ class Meses(Base):
         self.id_meses = id_meses
         self.mes_nombre = mes_nombre
 
+class Administradores(Base):
+    __tablename__ = 'Administradores'
+    id_adm=sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    usuario_adm = sqlalchemy.Column(sqlalchemy.String(64), nullable=False,unique=True)
+    contrasena_adm = sqlalchemy.Column(sqlalchemy.String(64), nullable=False)
+
+    def __init__(self, usuario_adm, contrasena_adm):
+        self.usuario_adm = usuario_adm
+        self.contrasena_adm = contrasena_adm
+
 
 Base.metadata.create_all(engine)
 
